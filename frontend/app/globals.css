@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* Sınıf tabanlı dark mode (html.dark) — tema betiği ile ilk boyamadan önce ayarlanır. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- Tasarım token'ları (Tailwind v4: yapılandırma dosyası yok, @theme yeterli) ---- */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Marka: indigo/violet arası */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+
+  /* Yüzeyler */
+  --color-canvas-light: #f6f7fb;
+  --color-canvas-dark: #0a0b10;
+  --color-panel-light: #ffffff;
+  --color-panel-dark: #12141d;
+  --color-panelalt-dark: #1a1d2a;
+  --color-bubble-alt-light: #f1f3f9;
+  --color-bubble-alt-dark: #222636;
+
+  /* Tipografi ölçeği */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.05rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.2rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.4rem;
+  --text-lg: 1.0625rem;
+  --text-lg--line-height: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.7rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+
+  /* Yumuşak gölgeler */
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.05), 0 10px 30px -18px rgb(15 23 42 / 0.18);
+  --shadow-pop: 0 4px 12px -4px rgb(15 23 42 / 0.14), 0 24px 48px -24px rgb(15 23 42 / 0.28);
+
+  --radius-panel: 1rem;
+  --radius-bubble: 1.1rem;
+
+  /* Mikro etkileşimler */
+  --ease-out-soft: cubic-bezier(0.22, 0.68, 0.32, 1);
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-typing-dot: typing-dot 1.2s ease-in-out infinite;
+  --animate-slide-in: slide-in 200ms var(--ease-out-soft) both;
+  --animate-fade-in: fade-in 160ms var(--ease-out-soft) both;
+  --animate-toast-in: toast-in 220ms var(--ease-out-soft) both;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+@keyframes slide-in {
+  from { transform: translateX(14px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Temel yüzey stilleri ---- */
+
+body {
+  background: var(--color-canvas-light);
+  color: #1e2537;
+  font-family: var(--font-sans);
+}
+.dark body {
+  background: var(--color-canvas-dark);
+  color: #e6e8f0;
+}
+
+/* İnce, temiz kaydırma çubukları */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(100 116 139 / 0.35) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(100 116 139 / 0.35);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Görünür odak halkası (klavye erişilebilirliği) */
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Ekran okuyucu-only yardımcı */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* İskelet yükleme parıltısı */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(148 163 184 / 0.14) 25%,
+    rgb(148 163 184 / 0.28) 37%,
+    rgb(148 163 184 / 0.14) 63%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* iOS güvenli alanları */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Composer otomatik büyüyen textarea */
+.autogrow-textarea {
+  field-sizing: content;
+  max-height: 9.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
